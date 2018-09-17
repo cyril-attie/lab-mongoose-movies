@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const Celebrity = require('../models/celebrity');
-
-
-const dbtitle = 'mongoose-movies-project';
-mongoose.connect(`mongodb://localhost/${dbtitle}`, {useNewUrlParser:true});
+mongoose.connect(`mongodb://localhost/'mongoose-movies-project'`, {useNewUrlParser:true});
 Celebrity.collection.drop();
 
 
@@ -26,5 +23,9 @@ const celebrities = [
 ]
 
 Celebrity.create(celebrities)
-.then(celebrities=>mongoose.connection.close())
+.then(celebrities=>{
+  console.log("succesfully created ", celebrities.length, "celebrities")
+  mongoose.connection.close()
+})
 .catch(e => console.log(e))
+
