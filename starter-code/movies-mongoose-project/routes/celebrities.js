@@ -50,6 +50,12 @@ router.post("/celebrities", (req, res, next) => {
   .catch((err)=>res.redirect("celebrities/new"))
 })
 
+router.post("/celebrities/:id/delete", (req,res,next)=>{
+  Celebrity.findByIdAndRemove(req.params.id)
+  .then((celebrity)=>{res.redirect("/celebrities")})
+  .catch((err)=> res.render("index",{err}))
+  
+})
 
 module.exports = router;
 
