@@ -46,16 +46,31 @@ router.post("/celebrities", (req, res, next) => {
   let { name, occupation, catchPhrase } = req.body
   const newCelebrity = new Celebrity({ name, occupation, catchPhrase })
   newCelebrity.save()
-  .then((celebrity)=> res.redirect("/celebrities"))
-  .catch((err)=>res.redirect("celebrities/new"))
+    .then((celebrity) => res.redirect("/celebrities"))
+    .catch((err) => res.redirect("celebrities/new"))
 })
 
-router.post("/celebrities/:id/delete", (req,res,next)=>{
+router.post("/celebrities/:id/delete", (req, res, next) => {
   Celebrity.findByIdAndRemove(req.params.id)
-  .then((celebrity)=>{res.redirect("/celebrities")})
-  .catch((err)=> res.render("index",{err}))
-  
+    .then((celebrity) => { res.redirect("/celebrities") })
+    .catch((err) => res.render("index", { err }))
+
 })
+
+router.get("/celebrities/:id/edit", (req,res,next)=>{
+  Celebrity.findById(req.params.id)
+    .then((celebrity) => res.render("celebrities/edit", { celebrity }))
+    .catch((err) => res.render("index", { err }))
+})
+
+router.post("/celebrities/:id", (req,res)=>{
+  const updates = {updates:req.body}
+  Celebrity.findOneAndUpdate({_id:req.params.id},{updates})
+  .then(celebrity=>res.redirect("celebrities"))
+  .catch(err=>next())
+})
+
+
 
 module.exports = router;
 
